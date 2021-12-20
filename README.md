@@ -1,2 +1,1 @@
-# MTG-full-stack
-MTG full stack project
+MTG application for creating and tracking your collection.
