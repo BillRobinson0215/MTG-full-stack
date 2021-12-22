@@ -6,6 +6,8 @@ const cors = require('cors')
 // require route files
 const exampleRoutes = require('./app/routes/example_routes')
 const userRoutes = require('./app/routes/user_routes')
+const collectionRoutes = require('./app/routes/collection_routes')
+const cardRoutes = require('./app/routes/card_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -17,6 +19,7 @@ const db = require('./config/db')
 
 // require configured passport authentication middleware
 const auth = require('./lib/auth')
+const { user } = require('osenv')
 
 // define server and client ports
 // used for cors and local port declaration
@@ -58,6 +61,8 @@ app.use(requestLogger)
 // register route files
 app.use(exampleRoutes)
 app.use(userRoutes)
+app.use(collectionRoutes)
+app.use(cardRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be

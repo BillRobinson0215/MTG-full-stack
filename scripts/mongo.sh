@@ -1,0 +1,1 @@
+mongoimport --db=MTG-full-stack-development --collection=cardTest --type=csv --headerline --file=./Test.csv --drop
