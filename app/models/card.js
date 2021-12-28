@@ -33,6 +33,9 @@ const cardSchema = new mongoose.Schema({
       type: String
     }
   ],
+  text: {
+    type: String
+  },
   power: {
     type: String
   },

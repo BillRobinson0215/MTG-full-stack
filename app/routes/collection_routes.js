@@ -11,13 +11,14 @@ const Card = require('../models/card.js')
 
 const requiresToken = passport.authenticate('bearer', { session: false })
 
-router.post('/collection/new', requiresToken, (req, res, next) => {
+router.post('/collection/new', (req, res, next) => {
   const collection = req.body.collection
 
   Collection.create(collection)
     .then(collection => {
       res.status(201).json({ collection })
     })
+    .then(user.collection = collection._id)
     .catch(next)
 })
 
@@ -52,36 +53,18 @@ router.delete('/collection/delete/:id', requiresToken, (req, res, next) => {
     .catch((err) => next(err))
 })
 
-router.patch('/collection/:id/:cardId', (req, res, next) => {
-  let foundCollection
+router.patch('/collection/:id/:cardId', async (req, res, next) => {
+  const card = await Card.findById(req.params.cardId)
+  console.log(card._id)
   Collection.findById(req.params.id)
-    .then(collection => {
-      foundCollection = collection
-    })
-    .then(() => Card.findById(req.params.cardId))
-    .then((card) => {
-      console.log(card)
-      foundCollection.cards.push(card._id)
-      return foundCollection.save()
-    })
-    .then(() => res.sendStatus(204))
-  // if an error occurs, pass it to the handler
-    .catch(next)
+		.then((collection) => {
+      console.log(collection)
+			collection.cards.push(card._id)
+			collection.save()
+		})
+		.then(() => res.sendStatus(204))
+		// if an error occurs, pass it to the handler
+		.catch(next)
 })
-
-// const displayCards = cardCollect.cards.map((card) => {
-//     return {
-//       Name: card.name,
-//       Mana_Cost: card.manaCost,
-//       CMC: card.convertedManaCost,
-//       Identity: card.colorIdentity,
-//       Type: card.type,
-//       SubType: card.subtypes,
-//       Keywords: card.keywords,
-//       Power: card.power,
-//       Toughness: card.toughness,
-//       Loyalty: card.loyalty,
-//       Rarity: card.rarity
-//     }
 
 module.exports = router
