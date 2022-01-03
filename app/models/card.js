@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   manaCost: {
     type: String,
@@ -45,7 +45,7 @@ const cardSchema = new mongoose.Schema({
   loyalty: {
     type: String
   },
-  rarity: String,
+  rarity: String
 })
 
 module.exports = mongoose.model('Card', cardSchema)
