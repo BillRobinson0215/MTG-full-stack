@@ -1,5 +1,9 @@
 MTG Full-Stack-Project
 
+### Deployed Site
+
+https://billrobinson0215.github.io/MTG-Full-Stack-Client
+
 ### Deployment Requirements
 1.  [√]  Host on your public Github page, not Github Enterprise.
 2.  [√]  Deploy client application on GH pages.
