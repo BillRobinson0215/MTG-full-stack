@@ -64,4 +64,4 @@ Once cards are added to the users collection the collection box will show the ca
 
 ERD:
 
-!['ERD'](/Users/billrobinson/sei/projects/MTG-full-stack/Photos/ERD.png)
+!['ERD'](photos/ERD.png)
