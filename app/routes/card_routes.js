@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
+const mongoose = require('mongoose')
 
 const requiresToken = passport.authenticate('bearer', { session: false })
 
@@ -46,7 +47,10 @@ router.delete('/cards/delete/:id/:cardId', async (req, res, next) => {
 		console.log(req.params.id)
 		Collection.findById(req.params.id)
 			.then((collection) => {
-				collection.cards.remove(card)
+				const foundCard = collection.cards.findIndex(cardIndex => {
+          return cardIndex.name === card.name
+        })
+        collection.cards.splice(foundCard, 1)
 				collection.save().then((collection) => {
 					res.status(204).json(collection)
 				})
