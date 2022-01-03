@@ -1,7 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
+
+const requiresToken = passport.authenticate('bearer', { session: false })
 
 // const Collection = require('../models/collection.js')
+const Collection = require('../models/collection.js')
 const Card = require('../models/card.js')
 // const User = require('../models/card.js')
 
@@ -28,5 +32,26 @@ router.get('/cards/:name', (req, res, next) => {
 		.catch(next)
 })
 
+router.get('/cardsid/:id', (req, res, next) => {
+	Card.findOne({ _id: req.params.id })
+		// respond with status 200 and JSON of the examples
+		.then((cards) => res.status(200).json({ cards }))
+		// if an error occurs, pass it to the handler
+		.catch(next)
+})
+
+router.delete('/cards/delete/:id/:cardId', async (req, res, next) => {
+		const card = await Card.findById(req.params.cardId)
+		console.log(req.params.cardId)
+		console.log(req.params.id)
+		Collection.findById(req.params.id)
+			.then((collection) => {
+				collection.cards.remove(card)
+				collection.save().then((collection) => {
+					res.status(204).json(collection)
+				})
+			})
+      .catch(next)
+    })
 
 module.exports = router

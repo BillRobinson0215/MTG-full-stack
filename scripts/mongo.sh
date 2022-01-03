@@ -1,1 +1,1 @@
-mongoimport --db=MTG-full-stack-development --collection=cardTest --type=csv --headerline --file=./Test.csv --drop
+mongoimport --host cluster0-shard-00-01.ymp0t.mongodb.net:27017 --db MTG-full-stack --collection cards --type csv --headerline --file ../MTG-project/output.csv/cards.csv --authenticationDatabase admin --ssl --username billrobinson0215 --password League1

@@ -17,7 +17,6 @@ const BadParamsError = errors.BadParamsError
 const BadCredentialsError = errors.BadCredentialsError
 
 const User = require('../models/user')
-let userId = null
 
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
@@ -30,7 +29,7 @@ const router = express.Router()
 // SIGN UP
 // POST /sign-up
 router.post('/sign-up', (req, res, next) => {
-  Promise.resolve(req.body.credentials)
+	Promise.resolve(req.body.credentials)
 		.then((credentials) => {
 			if (
 				!credentials ||
@@ -47,19 +46,24 @@ router.post('/sign-up', (req, res, next) => {
 				hashedPassword: hash,
 			}
 		})
-		.then((user) => { 
+		.then((user) => {
 			User.create(user)
-			.then((user) => { 
-				if (!user) {
-					return res.status(500).json({error: 'Duplicate User Entry'})
-				}
+			.then((user) => {
+				console.log(user)
 				Collection.create({ owner: user._id })
-				return user
+				.then((collection) => {
+					console.log(collection)
+					user.cardCollection = collection._id
+					user.save()
+					.then((user) => {
+						console.log(user) 
+						res.status(201).json({ user: user })
+					})
+				})
 			})
-			res.status(201).json({ user: user })
 		})
-		.catch(next)
-		})
+	.catch(next)
+})
 
 // SIGN IN
 // POST /sign-in
@@ -99,7 +103,7 @@ router.post('/sign-in', (req, res, next) => {
       .then((collections) =>{
         console.log(collections)
         return res.status(201).json({ user: user.toObject(),
-        collections: collections})
+        cardCollection: collections})
       })
     })
     .catch(next)

@@ -3,7 +3,7 @@ const passport = require('passport')
 const customErrors = require('../../lib/custom_errors')
 const handle404 = customErrors.handle404
 const router = express.Router()
-// const requireOwnership = customErrors.requireOwnership
+const requireOwnership = customErrors.requireOwnership
 
 const Collection = require('../models/collection.js')
 const Card = require('../models/card.js')
@@ -54,17 +54,20 @@ router.delete('/collection/delete/:id', requiresToken, (req, res, next) => {
 })
 
 router.patch('/collection/:id/:cardId', async (req, res, next) => {
-  const card = await Card.findById(req.params.cardId)
-  console.log(card._id)
-  Collection.findById(req.params.id)
-		.then((collection) => {
-      console.log(collection)
-			collection.cards.push(card._id)
-			collection.save()
-		})
-		.then(() => res.sendStatus(204))
-		// if an error occurs, pass it to the handler
-		.catch(next)
-})
+		const card = await Card.findById(req.params.cardId)
+		console.log(card._id)
+		console.log(req.params.id)
+		Collection.findById(req.params.id)
+			.populate('cards')
+			.then((collection) => {
+				collection.cards.push(card._id)
+				collection.save().then((collection) => {
+					res.status(204).json(collection)
+				})
+			})
+			// if an error occurs, pass it to the handler
+			.catch(next)
+	}
+)
 
 module.exports = router

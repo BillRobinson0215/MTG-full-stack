@@ -45,7 +45,7 @@ const cardSchema = new mongoose.Schema({
   loyalty: {
     type: String
   },
-  rarity: String
+  rarity: String,
 })
 
 module.exports = mongoose.model('Card', cardSchema)
