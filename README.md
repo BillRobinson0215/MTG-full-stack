@@ -64,4 +64,4 @@ Once cards are added to the users collection the collection box will show the ca
 
 ERD:
 
-!['ERD'](photos/ERD.png)
+!['ERD'](photos/ERD2.png)
